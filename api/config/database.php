@@ -8,13 +8,16 @@ class Database{
     public $conn;
 
     public function getCon(){
-        $this->conn = null;
-        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->dbname);
+        //$this->conn = null;
+        $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->dbname);
 
-        if($mysqli->connect_errno){
-            printf("Connect failed: %s\n", $mysqli->connect_error);
-            exit();
+        //echo json_encode(array("message" => $this->conn));
+
+        if($this->conn->connect_errno){
+            die('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);
         }
+
+        return $this->conn;
     }
 }
 ?>

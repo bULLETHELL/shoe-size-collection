@@ -8,7 +8,7 @@ header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../objects/sscInfo.php';
 
-echo json_encode(array("message" => "Create running."));
+//echo json_encode(array("message" => "Create running."));
 
 $database = new Database();
 $dbcon = $database->getCon();
@@ -21,52 +21,35 @@ if(
     !empty($data->age) &&
     !empty($data->shoe_size)
 ){
+    //echo json_encode(array("message" => "if statement running."));
     $sscInfo->name = $data->name;
     $sscInfo->email = $data->email;
     $sscInfo->age = $data->age;
     $sscInfo->shoe_size = $data->shoe_size;
+    //echo json_encode(array("message" => "object variables set."));
 
     if($sscInfo->create()){
+        //echo json_encode(array("message" => "sscInfo.create running."));
+        
         http_response_code(201);
 
         echo json_encode(array("message" => "Shoe Size Collection Info was created."));
+
+        $dbcon->close();
     }
     else{
         http_response_code(503);
 
         echo json_encode(array("message" => "Unable to create Shoe Size Collection Info."));
+
+        $dbcon->close();
     }
 }
 else{
     http_response_code(400);
 
-    echo json_encode(array("message" => "Unable to create Shoe Size Collection Info. Data is incomplete."))
+    echo json_encode(array("message" => "Unable to create Shoe Size Collection Info. Data is incomplete."));
+
+    $dbcon->close();
 }
-
-
-
-
-$query = "SELECT idAssignment, nameAssignment, pathAssignment FROM Assignment";
-$result = $mysqli->query($query);
-
-/* numeric array */
-//$rows = $result->fetch_all(MYSQLI_NUM);
-/*foreach($rows as $row){
-    printf ("id: %s, name: %s, path: %s\n", $row[0], $row[1], $row[2]);
-}*/
-
-/* associative array */
-
-$rows = $result->fetch_all(MYSQLI_ASSOC);
-/*
-printf ("%s (%s)\n", $row["idAssignment"], $row["nameAssignment"], $row["pathAssignment"]);
-*/
-
-echo json_encode($rows);
-
-/* free result set */
-$result->free();
-
-/* close connection */
-$mysqli->close();
 ?>
