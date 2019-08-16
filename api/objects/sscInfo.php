@@ -43,5 +43,4 @@ class sscInfo{
         return false;
     }
 }
-
 ?>

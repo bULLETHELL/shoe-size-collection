@@ -13,7 +13,8 @@ include_once '../objects/sscInfo.php';
 $database = new Database();
 $dbcon = $database->getCon();
 $sscInfo = new sscInfo($dbcon);
-$data = json_decode(file_get_contents("php://input"));
+$indata = file_get_contents("php://input");
+$data = json_decode($indata);
 
 if(
     !empty($data->name) &&
@@ -49,6 +50,8 @@ else{
     http_response_code(400);
 
     echo json_encode(array("message" => "Unable to create Shoe Size Collection Info. Data is incomplete."));
+    echo json_encode(array("message" => $indata));
+    echo json_encode(array("message" => $data));
 
     $dbcon->close();
 }
